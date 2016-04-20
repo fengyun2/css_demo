@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>loading加载动画</title>
+  <style type="text/css">
+    .wx_loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 9999;
+      background-color: rgba(0, 0, 0, 0.0);
+    }
+
+    /* 垂直居中 */
+    /* 设置 position: fixed; _position:absolute;
+设置 left:50% 和 top:50%;
+设置 margin: -(DIV的offsetWidth/2) 0 0 -（DIV的offsetHeight/2） */
+    .wx_loading .wx_loading_inner {
+      text-align: center;
+      background-color: rgba(0,0,0,0.5);
+      color: #fff;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+
+      /* 这里不是很明白,明明offsetWidth: 150px; offsetHeight: 84px; */
+      margin-left: -70px;
+      margin-top: -48px;
+
+      width: 150px;
+      border-radius: 6px;
+      font-size: 14px;
+      padding: 58px 0 10px 0;
+
+    }
+
+    .wx_loading .wx_loading_inner .wx_loading_icon {
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      margin-left: -16px;
+      width: 24px;
+      height: 24px;
+      border: 2px solid #fff;
+      border-radius: 24px;
+      -webkit-animation: gif 1s infinite linear;
+      animation: gif 1s infinite linear;
+      clip: rect(0 auto 12px 0);
+    }
+    @keyframes gif {
+      0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    @-webkit-keyframes gif {
+      0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+      }
+      100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wx_loading">
+    <div class="wx_loading_inner">
+      <i class="wx_loading_icon">我是加载测试用例</i>
+    </div>
+  </div>
+</body>
+</html>
