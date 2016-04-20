@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <style type="text/css">
+    /* 侧边栏 */
+    .nav-list {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: -200px;
+      width: 200px;
+      background-color: #fff;
+      color: #313131;
+      transition: all .3s ease;
+    }
+    .nav-list.show {
+      transform: translateX(200px);
+    }
+
+    /* 侧边栏列表 */
+    .list-ul {
+      margin: 0 24px;
+      border-top: 1px solid #d4d4d4;
+      overflow: hidden;
+      padding-top: 9%;
+      /* background-color: #00f; */
+      /* margin: 0; */
+      list-style-type: none;
+      padding-left: 0;
+    }
+    .list-ul li {
+      font-size: 14px;
+      font-weight: 200;
+      padding: 9% 0;
+      text-align: center;
+      text-indent: 1px;
+      line-height: 15px;
+      color: #7f8c8d;
+    }
+    .list-ul li:last-child {
+      margin-bottom: 50px;
+    }
+    .list-ul li:before {
+      color: #2c3e50;
+    }
+    .line {
+      border-top: 1px solid #d4d4d4;
+    }
+    a {
+      display: block;
+      color: #313131;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <section id="sideBar" class="nav-list show">
+    <ul class="list-ul">
+      <li><a class="line" href="">全部</a></li>
+      <li><a class="line" href="">精华</a></li>
+      <li><a class="line" href="">分享</a></li>
+      <li><a class="line" href="">问答</a></li>
+      <li><a class="line" href="">招聘</a></li>
+      <li><a class="line" href="">消息</a></li>
+      <li><a class="line" href="">关于</a></li>
+    </ul>
+  </section>
+</body>
+</html>
