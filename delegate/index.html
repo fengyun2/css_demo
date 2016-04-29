@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-size: 16px;
+    }
+    ul,.ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    li {
+      font-size: 14px;
+      display: inline;
+
+    }
+  </style>
+</head>
+<body>
+  <ul id="parent-list">
+    <li id="post-1">Item1</li>
+    <li id="post-2">Item2</li>
+    <li id="post-3">Item3</li>
+    <li id="post-4">Item4</li>
+    <li id="post-5">Item5</li>
+  </ul>
+
+  <div id="myDiv">
+    <ul>
+      <li>
+        <a href="javascript:void(0);" class="classA">我是列表 1</a>
+        <a href="javascript:void(0);" class="classB">我是列表 2</a>
+        <a href="javascript:void(0);" class="classA">我是列表 3</a>
+        <a href="javascript:void(0);" class="classB">我是列表 4</a>
+        <a href="javascript:void(0);" class="classA">我是列表 5</a>
+      </li>
+    </ul>
+  </div>
+</body>
+<script>
+  function addListeners4Li (liNode) {
+    liNode.onclick = function clickHandler () {
+      console.log('LiNode: 我被点击了');
+    };
+    liNode.onmouseover = function mouseOerHandler () {
+      console.log('LiNode: 鼠标滑过了');
+    };
+  }
+
+  window.onload = function () {
+    /*常规做法*/
+/*    var ulNode = document.getElementById('parent-list');
+    var liNodes = document.getElementsByTagName('li');
+    for(var i = 0, l = liNodes.length; i < l; i++) {
+      addListeners4Li(liNodes[i]);
+    }*/
+
+    /*事件代理*/
+    /*simple 事件代理*/
+    // 获取父节点,并为它添加一个click事件
+
+    // console.log(document.getElementById('parent-list'));
+/*    document.getElementById('parent-list').addEventListener("click", function (e) {
+
+      console.log(e.target.nodeName.toUpperCase());
+
+      // 检查事件源e.target是否为li
+      if (e.target && e.target.nodeName.toUpperCase() === "LI") {
+        // 真正处理的过程在这里
+        console.log("List item ", e.target.id.replace("post-", ""), " was clicked");
+      }
+    });*/
+
+    /*复杂的事件代理*/
+    document.getElementById('myDiv').addEventListener("click", function (e) {
+      // e.target 是目标对象
+      if ( e.target && e.target.matches("a.classA")) {
+        console.log('你被点击了...');
+      }
+    });
+  };
+</script>
+</html>
