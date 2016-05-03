@@ -13,8 +13,8 @@
     em,i,dfn,cite,strong,small{font-style:normal;}
     img{border:0;}
     fieldset,button,input,select,option{vertical-align:middle;font:12px/18px "宋体",arial,sans-serif;}
-    table{border-collapse:collapse;border-spacing:0}
-    textarea{resize:none}
+    table{border-collapse:collapse;border-spacing:0;}
+    textarea{resize:none;}
     /* color */
     a:link,a:visited{color:#575757;text-decoration:none;}
     a:hover{color:#ef4165;text-decoration:none;}
@@ -46,75 +46,206 @@
 </head>
 <body>
   <div class="preview">
-    <div id="vertical" class="bigImg">
-      <img src="mid/05.jpg" width="400" height="400" alt="" id="midimg" />
-      <div style="display:none;" id="winSelector"></div>
-    </div><!--bigImg end-->
-    <div class="smallImg">
-      <div class="scrollbutton smallImgUp disabled"></div>
-      <div id="imageMenu">
-        <ul>
-          <li id="onlickImg"><img src="small/05.jpg" width="68" height="68" alt="洋妞"/></li>
-          <li><img src="small/02.jpg" width="68" height="68" alt="洋妞"/></li>
-          <li><img src="small/03.jpg" width="68" height="68" alt="洋妞"/></li>
-          <li><img src="small/04.jpg" width="68" height="68" alt="洋妞"/></li>
-          <li><img src="small/01.jpg" width="68" height="68" alt="洋妞"/></li>
-          <li><img src="small/06.jpg" width="68" height="68" alt="洋妞"/></li>
-          <li><img src="small/04.jpg" width="68" height="68" alt="洋妞"/></li>
-        </ul>
-      </div>
-      <div class="scrollbutton smallImgDown"></div>
-    </div><!--smallImg end-->
-    <div id="bigView" style="display:none;"><img width="800" height="800" alt="" src="" /></div>
+   <div id="vertical" class="bigImg">
+    <img src="mid/05.jpg" width="400" height="400" alt="" id="midimg" />
+    <div style="display:none;" id="winSelector"></div>
+  </div><!--bigImg end-->
+  <div class="smallImg">
+    <div class="scrollbutton smallImgUp disabled"></div>
+    <div id="imageMenu">
+     <ul>
+      <li id="onlickImg" class="first"><img src="small/05.jpg" width="68" height="68" alt="洋妞"/></li>
+      <li><img src="small/02.jpg" width="68" height="68" alt="洋妞"/></li>
+      <li><img src="small/03.jpg" width="68" height="68" alt="洋妞"/></li>
+      <li><img src="small/04.jpg" width="68" height="68" alt="洋妞"/></li>
+      <li><img src="small/01.jpg" width="68" height="68" alt="洋妞"/></li>
+      <li><img src="small/06.jpg" width="68" height="68" alt="洋妞"/></li>
+      <li><img src="small/04.jpg" width="68" height="68" alt="洋妞"/></li>
+    </ul>
   </div>
-  <!--preview end-->
-  <script type="text/javascript">
-    $(document).ready(function(){
-  // 图片上下滚动
-  var count = $("#imageMenu li").length - 5; /* 显示 6 个 li标签内容 */
-  var interval = $("#imageMenu li:first").width();
+  <div class="scrollbutton smallImgDown"></div>
+</div><!--smallImg end-->
+<div id="bigView" style="display:none;"><img width="800" height="800" alt="" src="" /></div>
+</div>
+<!--preview end-->
+<script type="text/javascript">
+  $(document).ready(function(){
+	// 图片上下滚动
+	// var count = $("#imageMenu li").length - 5; /* 显示 6 个 li标签内容 */
+
+  var count = document.querySelector('#imageMenu li').length - 5;
+  // console.log('count: ', count);
+
+	// var interval = $("#imageMenu li:first").width();
+
+  var interval = document.querySelector('.first').offsetWidth;
+
+  // console.log('interval: ', interval);
+
   var curIndex = 0;
 
-  $('.scrollbutton').click(function(){
+  var smallImg = document.querySelector('.smallImg');
+  var scrollbuttons = document.querySelectorAll('.scrollbutton');
+  var smallImgUp = document.querySelector('.smallImgUp');
+  var smallImgDown = document.querySelector('.smallImgDown');
+  var imageMenu = document.querySelector('#imageMenu');
+
+
+
+
+  smallImg.addEventListener('click', function (e) {
+    // 检测是否支持classList
+    if ("classList" in document.documentElement) {
+      if (e.target && e.target.classList.contains('scrollbutton')) {
+        var _self = e.target;
+        if (_self.classList.contains('disabled')) {
+          return false;
+        }
+        if (_self.classList.contains('smallImgUp')) {
+          --curIndex;
+        } else {
+          ++curIndex;
+        }
+
+        for(var i = 0, len = scrollbuttons.length; i< len; i++) {
+          // console.log('scrollbutton: ', scrollbuttons[i]);
+          scrollbuttons[i].classList.remove('disabled');
+        }
+        if (curIndex == 0) {
+          smallImgUp.classList.add('disabled');
+        }
+        if (curIndex == count-1) {
+          smallImgDown.classList.add('disabled');
+        }
+
+        $("#imageMenu ul").stop(false, true).animate({"marginLeft" : -curIndex*interval + "px"}, 600);
+      }
+    } else {
+      console.log('你的浏览器该升级了...');
+    }
+
+  });
+
+/*  $('.scrollbutton').click(function(){
     if( $(this).hasClass('disabled') ) return false;
 
     if ($(this).hasClass('smallImgUp')) --curIndex;
     else ++curIndex;
 
     $('.scrollbutton').removeClass('disabled');
-    if (curIndex === 0) $('.smallImgUp').addClass('disabled');
-    if (curIndex === count-1) $('.smallImgDown').addClass('disabled');
+    if (curIndex == 0) $('.smallImgUp').addClass('disabled');
+    if (curIndex == count-1) $('.smallImgDown').addClass('disabled');
 
     $("#imageMenu ul").stop(false, true).animate({"marginLeft" : -curIndex*interval + "px"}, 600);
-  });
+  });*/
+/*	// 解决 ie6 select框 问题
+	$.fn.decorateIframe = function(options) {
+        if ($.browser.msie && $.browser.version < 7) {
+            var opts = $.extend({}, $.fn.decorateIframe.defaults, options);
+            $(this).each(function() {
+                var $myThis = $(this);
+                //创建一个IFRAME
+                var divIframe = $("<iframe />");
+                divIframe.attr("id", opts.iframeId);
+                divIframe.css("position", "absolute");
+                divIframe.css("display", "none");
+                divIframe.css("display", "block");
+                divIframe.css("z-index", opts.iframeZIndex);
+                divIframe.css("border");
+                divIframe.css("top", "0");
+                divIframe.css("left", "0");
+                if (opts.width == 0) {
+                    divIframe.css("width", $myThis.width() + parseInt($myThis.css("padding")) * 2 + "px");
+                }
+                if (opts.height == 0) {
+                    divIframe.css("height", $myThis.height() + parseInt($myThis.css("padding")) * 2 + "px");
+                }
+                divIframe.css("filter", "mask(color=#fff)");
+                $myThis.append(divIframe);
+            });
+        }
+    }
+    $.fn.decorateIframe.defaults = {
+        iframeId: "decorateIframe1",
+        iframeZIndex: -1,
+        width: 0,
+        height: 0
+    }
+    //放大镜视窗
+    $("#bigView").decorateIframe();*/
+
+
+
     //点击到中图
     var midChangeHandler = null;
 
-    $("#imageMenu li img").bind("click", function(){
-      if ($(this).attr("id") != "onlickImg") {
-        midChange($(this).attr("src").replace("small", "mid"));
-        $("#imageMenu li").removeAttr("id");
-        $(this).parent().attr("id", "onlickImg");
-      }
-    }).bind("mouseover", function(){
-      if ($(this).attr("id") != "onlickImg") {
-        window.clearTimeout(midChangeHandler);
-        midChange($(this).attr("src").replace("small", "mid"));
-        $(this).css({ "border": "3px solid #959595" });
-      }
-    }).bind("mouseout", function(){
-      if($(this).attr("id") != "onlickImg"){
-        $(this).removeAttr("style");
-        midChangeHandler = window.setTimeout(function(){
-          midChange($("#onlickImg img").attr("src").replace("small", "mid"));
-        }, 1000);
+
+/*    imageMenu.addEventListener('click', function (e) {
+      if (e.target && e.target.nodeName.toUpperCase() === 'IMG' ) {
+        var _self = e.target;
+        if (_self.id.toUpperCase() !== 'ONLICKIMG') {
+
+          var currLi = document.querySelector('#imageMenu li');
+          _self.src.replace('small','mid');
+          currLi.removeAttribute('id');
+          console.log('parent: ',_self.parentNode);
+          _self.parentNode.setAttribute('id', 'onlickImg');
+          // 检测是否支持classList
+          if ("classList" in document.documentElement) {
+
+          } else {
+            console.log('你的浏览器该升级了...');
+          }
+        }
       }
     });
-    function midChange(src) {
-      $("#midimg").attr("src", src).load(function() {
-        changeViewImg();
-      });
-    }
+    imageMenu.addEventListener('mouseover', function (e) {
+      if (e.target && e.target.nodeName.toUpperCase() === 'IMG' ) {
+        var _self = e.target;
+        if (_self.id.toUpperCase() !== 'ONLICKIMG') {
+          window.clearTimeout(midChangeHandler);
+          var currLi = document.querySelector('#imageMenu li');
+          _self.src.replace('small','mid');
+        }
+      }
+    });
+    imageMenu.addEventListener('mouseout', function (e) {
+      if (e.target && e.target.nodeName.toUpperCase() === 'IMG' ) {
+        var _self = e.target;
+        if (_self.id.toUpperCase() !== 'ONLICKIMG') {
+           _self.removeAttribute("style");
+           midChangeHandler = window.setTimeout(function(){
+            document.querySelector("#onlickImg img").src.replace("small", "mid");
+          }, 1000);
+        }
+      }
+    });*/
+
+    $("#imageMenu li img").bind("click", function(){
+      if ($(this).attr("id") != "onlickImg") {
+       midChange($(this).attr("src").replace("small", "mid"));
+       $("#imageMenu li").removeAttr("id");
+       $(this).parent().attr("id", "onlickImg");
+     }
+   }).bind("mouseover", function(){
+    if ($(this).attr("id") != "onlickImg") {
+     window.clearTimeout(midChangeHandler);
+     midChange($(this).attr("src").replace("small", "mid"));
+     $(this).css({ "border": "3px solid #959595" });
+   }
+ }).bind("mouseout", function(){
+  if($(this).attr("id") != "onlickImg"){
+   $(this).removeAttr("style");
+   midChangeHandler = window.setTimeout(function(){
+    midChange($("#onlickImg img").attr("src").replace("small", "mid"));
+  }, 1000);
+ }
+});
+ function midChange(src) {
+  $("#midimg").attr("src", src).load(function() {
+    changeViewImg();
+  });
+}
     //大视窗看图
     function mouseover(e) {
       if ($("#winSelector").css("display") == "none") {
