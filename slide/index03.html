@@ -1,166 +1,206 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
-
-<title>手机焦点图webkfa</title>
-
-<script type="text/javascript" src="http://statics.webkfa.com/js/iscroll5.js"></script>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>webkfa.com</title>
+<link href="http://mobile.kuwo.cn/mpage/html5/2015/css/html5.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://statics.webkfa.com/js/iscroll.js"></script>
 
 <script type="text/javascript">
-
-var myScroll;
-
-function loaded () {
-	myScroll = new IScroll('#wrapper', {
-		scrollX: true,
-		scrollY: false,
-		momentum: false,
+function $S(s) {
+	return document.getElementById(s);
+}
+var timer=null;
+var focustotal=0;
+function tjScroll() {
+	var circle = document.querySelector("#scroller");
+	img = circle.querySelectorAll("img");
+	focustotal=img.length;
+	var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+	function loaded() {
+		var v_heigh = parseInt(w * 260 / 620) + "px";
+		var w_heigh = parseInt(w * 260 / 620);
+		$S("viewport").style.height = v_heigh;
+		$S("wrapper").style.height = v_heigh;
+		$S("scroller").style.height = v_heigh;
+		$S("scroller").style.width = parseInt(w * img.length) + "px";
+		for (var i = 0; i < img.length; i++) {
+			img[i].height = w_heigh;
+		}
+		var sWidth = w + "px";
+		var arr = document.getElementsByTagName("div");
+		var num = arr.length;
+		for (var j = 0; j < num; ++j) {
+			if (arr[j].className == "slide") {
+				arr[j].style.width = sWidth;
+			}
+		}
+		
+	}
+	loaded();
+	if(timer)window.clearInterval(timer);
+	timer = window.setInterval(focusTime, 5000);
+}
+function selectyq(index){
+	var circle = document.querySelector("#tjditBox");
+	var imgarr = circle.querySelectorAll("img");
+	for(var i=0;i<imgarr.length;i++){
+		var obj=imgarr[i];
+		if(index==i){
+			obj.src='http://image.kuwo.cn/mpage/html5/2015/tuijian/db.png';
+		}else{
+			obj.src='http://image.kuwo.cn/mpage/html5/2015/tuijian/da.png';
+		}
+	}
+}
+function focusTime(){
+	//if($("#tjpblId").is(":visible") && focus_click_flag){
+	if(focus_click_flag){
+		try{myScroll_focus.scrollToPage('next',0);}catch(e){
+			//alert(e+":focus error:"+myScroll_focus);
+			insFocusPic();
+		}
+	}	
+}
+function clickFocus(index){
+	if(g_click_flag==0)return;
+	try{
+		var fobj=config.focuslst[index];
+		commonClick(fobj.source,fobj.sourceid,fobj.name,'','','',1,"曲库->热门推荐->焦点图->"+fobj.name);
+		focus_click_flag=1;
+	}catch(e){}
+}
+var myScroll_focus;
+var g_click_flag=1;
+var focus_click_flag=1;
+function insFocusPic(){
+	myScroll_focus = new iScroll('wrapper', {
 		snap: true,
-		snapSpeed: 400,
-		keyBindings: true,
-		indicators: {
-			el: document.getElementById('indicator'),
-			resize: false
+		bounce:false,
+		momentum: false,
+		hScrollbar: false,
+		onScrollStart:function(){
+			g_click_flag=1;
+			focus_click_flag=0;
+		},
+		onScrollMove: function () {
+			g_click_flag=0;
+		},
+		onScrollEnd: function () {
+			try{
+				setTimeout(cleargclickflag,80);
+				focus_click_flag=1;
+				if(this.currPageX==(focustotal-1)){
+					myScroll_focus.scrollToPage(1,0,0);
+				}else if(this.currPageX==0){
+					myScroll_focus.scrollToPage((focustotal-2),0,0);
+				}else{
+					selectyq(this.currPageX-1);
+				}
+			}catch(e){}
 		}
 	});
+	myScroll_focus.scrollToPage(1,0,0);
+	tjScroll();
 }
-
-document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+function cleargclickflag(){
+	g_click_flag=1;
+}
+document.addEventListener('DOMContentLoaded', insFocusPic, false);
 </script>
 
-<style type="text/css">
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
+<style type="text/css" media="all">
 
-html {
-	-ms-touch-action: none;
-}
 
-body, ul, li {
-	padding: 0;
-	margin: 0;
-	border: 0;
-}
 
-body {
-	font-size: 12px;
-	font-family: ubuntu, helvetica, arial;
-	overflow: hidden; /* this is important to prevent the whole page to bounce */
-}
-
-#viewport {
-	position: relative;
-	width: 320px;
-	height: 320px;
-	margin: 0 auto;
-	background: #444;
-	overflow: hidden;
-}
-
-#wrapper {
-	width: 320px;
-	height: 320px;
-	margin: 0 auto;
-}
 
 #scroller {
-	position: absolute;
-	z-index: 1;
-	-webkit-tap-highlight-color: rgba(0,0,0,0);
-	width: 1280px;
-	height: 320px;
-	-webkit-transform: translateZ(0);
-	-moz-transform: translateZ(0);
-	-ms-transform: translateZ(0);
-	-o-transform: translateZ(0);
-	transform: translateZ(0);
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	-webkit-text-size-adjust: none;
-	-moz-text-size-adjust: none;
-	-ms-text-size-adjust: none;
-	-o-text-size-adjust: none;
-	text-size-adjust: none;
-	background-color: #444;
+	width:900%;
+	height:100%;
+	float:left;
+	padding:0;
 }
-
-.slide {
-	width: 320px;
-	height: 320px;
-	float: left;
-}
-
-.painting {
-	width: 320px;
-	height: 320px;
-}
-
-.giotto {
-	background: url(http://gi2.md.alicdn.com/bao/uploaded/i2/TB1KChvHXXXXXbPXpXXXXXXXXXX_!!0-item_pic.jpg_320x320q90.jpg) no-repeat;
-}
-
-.leonardo {
-	background: url(http://gi2.md.alicdn.com/bao/uploaded/i2/TB1p9VGHpXXXXbTXXXXXXXXXXXX_!!0-item_pic.jpg_320x320q90.jpg) no-repeat;
-}
-
-.gaugin {
-	background: url(http://gi4.md.alicdn.com/bao/uploaded/i4/TB1wkQsHpXXXXXXXVXXXXXXXXXX_!!0-item_pic.jpg_320x320q90.jpg) no-repeat;
-}
-
-.warhol {
-	background: url(http://gi1.md.alicdn.com/bao/uploaded/i1/TB1yC_CHpXXXXaXXpXXXXXXXXXX_!!0-item_pic.jpg_320x320q90.jpg) no-repeat;
-}
-
-#indicator {
-	position: relative;
-	width: 110px;
-	height: 20px;
-	margin: 10px auto;
-	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAUBAMAAABohZD3AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUGCDYztyDUJgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAAGFBMVEUAAADNzc3Nzc3Nzc3Nzc3Nzc3Nzc3///8aWwwLAAAABnRSTlMAX5Ks3/nRD0HIAAAAAWJLR0QHFmGI6wAAAFtJREFUGFdjYGBgEHYNMWRAAJE0IHCEc5nSwEABxleD8JOgXMY0KBCA8FlgfAcIXwzGT4TwzWD8ZAjfDcZPgfDDYPxU7Hx09ejmoduH7h5096L7B8O/6OGBGl4APYg8TQ0XAScAAAAASUVORK5CYII=);
-}
-
-#dotty {
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	border-radius: 10px;
-	background: #777;
-}
-
 </style>
 </head>
-<body onload="loaded()">
-
-<div id="viewport">
-	<div id="wrapper">
-		<div id="scroller">
-			<div class="slide">
-				<div class="painting giotto"></div>
-			</div>
-			<div class="slide">
-				<div class="painting leonardo"></div>
-			</div>
-			<div class="slide">
-				<div class="painting gaugin"></div>
-			</div>
-			<div class="slide">
-				<div class="painting warhol"></div>
+<body>
+<div class="jdPs">
+	<div id="viewport">
+		<div id="wrapper">
+			<div id="scroller">
+				<div class="slide">
+					<div class="painting giotto" onclick="clickFocus(0)">
+						<img src="http://img4.kwcdn.kuwo.cn/star/upload/10/10/1429842004714_.jpg" width="100%" height="130">
+					</div>
+				</div>
+				<div class="slide">
+					<div class="painting giotto"  onclick="clickFocus(0)">
+						<img src="http://img4.kwcdn.kuwo.cn/star/upload/3/3/1430131361555_.jpg"	width="100%" height="130">
+					</div>
+				</div>
+				<div class="slide">
+					<div class="painting giotto"  onclick="clickFocus(1)">
+						<img src="http://img4.kwcdn.kuwo.cn/star/upload/3/3/1430103988563_.jpg"	width="100%" height="130">
+					</div>
+				</div>
+				<div class="slide">
+					<div class="painting giotto">
+						<img src="http://img4.kwcdn.kuwo.cn/star/upload/10/10/1429842004714_.jpg" width="100%" height="130">
+					</div>
+				</div>
+				<div class="slide">
+					<div class="painting giotto">
+						<img src="http://img4.kwcdn.kuwo.cn/star/upload/3/3/1430131361555_.jpg"	width="100%" height="130">
+					</div>
+				</div>
+				<div class="slide">
+					<div class="painting giotto">
+						<img src="http://img4.kwcdn.kuwo.cn/star/upload/3/3/1430103988563_.jpg"	width="100%" height="130">
+					</div>
+				</div>
+				<div class="slide">
+					<div class="painting giotto">
+						<img src="http://img4.kwcdn.kuwo.cn/star/upload/10/10/1429842004714_.jpg" width="100%" height="130">
+					</div>
+				</div>
+				<div class="slide">
+					<div class="painting giotto">
+						<img src="http://img4.kwcdn.kuwo.cn/star/upload/3/3/1430131361555_.jpg"	width="100%" height="130">
+					</div>
+				</div>
+				<div class="slide">
+					<div class="painting giotto">
+						<img src="http://img4.kwcdn.kuwo.cn/star/upload/3/3/1430103988563_.jpg"	width="100%" height="130">
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
+	<p class="ditBox" id="tjditBox" style="z-index: 90">
+		<a href="javascript:void(0)">
+			<img src="http://image.kuwo.cn/mpage/html5/2015/tuijian/da.png" width="80%">
+		</a>
+		<a href="javascript:void(0)">
+			<img src="http://image.kuwo.cn/mpage/html5/2015/tuijian/da.png" width="80%">
+		</a>
+		<a href="javascript:void(0)">
+			<img src="http://image.kuwo.cn/mpage/html5/2015/tuijian/db.png"	width="80%">
+		</a>
+		<a href="javascript:void(0)">
+			<img src="http://image.kuwo.cn/mpage/html5/2015/tuijian/da.png"	width="80%">
+		</a>
+		<a href="javascript:void(0)">
+			<img src="http://image.kuwo.cn/mpage/html5/2015/tuijian/da.png"	width="80%">
+		</a>
+		<a href="javascript:void(0)">
+			<img src="http://image.kuwo.cn/mpage/html5/2015/tuijian/da.png"	width="80%">
+		</a>
+		<a href="javascript:void(0)">
+			<img src="http://image.kuwo.cn/mpage/html5/2015/tuijian/da.png" width="80%">
+		</a>
+	</p>
 </div>
-
-<div id="indicator">
-	<div id="dotty"></div>
-</div>
-<p style="margin:0 auto;width:320px;">这个代码主要是为了做手机网页的</p>
 </body>
 </html>
