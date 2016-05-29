@@ -2,7 +2,7 @@
 * @Author: fengyun2
 * @Date:   2016-05-29 10:53:22
 * @Last Modified by:   fengyun2
-* @Last Modified time: 2016-05-29 14:31:50
+* @Last Modified time: 2016-05-29 20:39:12
 */
 
 'use strict';
@@ -12,6 +12,7 @@ var diff = require('virtual-dom/diff');
 var patch = require('virtual-dom/patch');
 var createElement = require('virtual-dom/create-element');
 
+/* Example1: */
 
 /*function render(count)  {
     return h('div', {
@@ -23,9 +24,9 @@ var createElement = require('virtual-dom/create-element');
             height: (100 + count) + 'px'
         }
     }, [String(count)]);
-}*/
+  }*/
 
-function render() {
+/*function render() {
   return h('h1.fun', {
     href: '#',
     onclick: function (e) {
@@ -37,8 +38,41 @@ function render() {
     }
   }, 'click here to win a prize');
 }
+*/
 
-var count = 0;
+/*var obj = {
+  a: 'Apple',
+  b: 'Banana',
+  c: 'Cherry',
+  d: 'Durian',
+  e: 'Elder Berry'
+};
+function render() {
+  return h('table',
+    [h('tr', [h('th', {style: {'background-color': '#2f2', 'padding': '5px 10px', 'border-radius': '4px'}}, 'letter'), h('th', {style: {'background-color': '#2f2', 'padding': '5px 10px', 'border-radius': '4px'}}, 'fruit')]),
+    Object.keys(obj).map(function (k) {
+      return h('tr',
+        [h('th', k),
+                h('td', obj[k])]
+        );
+    })]
+    );
+}*/
+
+/*var leftNode = h('div.foo#bar',[
+  h('span', 'some text'),
+  h('input', {type: 'text', value: 'foo'})
+  ]);
+
+var rightNode = h('text');
+
+var patches = diff(leftNode, rightNode);
+console.log(patches);
+*/
+
+
+
+/*var count = 0;
 
 var tree = render();
 var rootNode = createElement(tree);
@@ -52,3 +86,16 @@ setInterval(function () {
   rootNode = patch(rootNode, patches);
   tree = newTree;
 }, 1000);
+*/
+
+var leftNode = h('div');
+var rightNode = h('div',[h('span', {'style': {'background-color': '#2f2', 'padding': '5px 10px', 'border-radius': '4px', 'color': '#fff'}}, '环境好呀!')]);
+
+// render the left node to DOM node
+var rootNode = createElement(leftNode);
+document.body.appendChild(rootNode);
+
+// update the DOM with the results of a diff
+var patches = diff(leftNode, rightNode);
+patch(rootNode, patches);
+
