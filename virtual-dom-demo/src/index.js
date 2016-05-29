@@ -2,7 +2,7 @@
 * @Author: fengyun2
 * @Date:   2016-05-29 10:53:22
 * @Last Modified by:   fengyun2
-* @Last Modified time: 2016-05-29 20:39:12
+* @Last Modified time: 2016-05-29 20:53:34
 */
 
 'use strict';
@@ -89,7 +89,22 @@ setInterval(function () {
 */
 
 var leftNode = h('div');
-var rightNode = h('div',[h('span', {'style': {'background-color': '#2f2', 'padding': '5px 10px', 'border-radius': '4px', 'color': '#fff'}}, '环境好呀!')]);
+var rightNode = h('div',
+  [
+  h('span',
+  {
+    'style':
+    {
+      key: 'primary key',
+      namespace: 'http://www.baidu.com',
+      ev-click: function (ev) {
+        alert(ev);
+      },
+      'background-color': '#2f2', 'padding': '5px 10px', 'border-radius': '4px', 'color': '#fff'
+    }
+  }, '环境好呀!')
+  ]
+  );
 
 // render the left node to DOM node
 var rootNode = createElement(leftNode);
@@ -99,3 +114,4 @@ document.body.appendChild(rootNode);
 var patches = diff(leftNode, rightNode);
 patch(rootNode, patches);
 
+console.log(patches);
