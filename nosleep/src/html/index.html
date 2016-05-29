@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <input type="button" id="toggle" value="Wake Lock Disabled" />
+  <script type="text/javascript" src="../js/nosleep.js"></script>
+  <script type="text/javascript">
+  var noSleep = new NoSleep();
+  var wakeLockEabled = false;
+  var toggleEl = document.querySelector('#toggle');
+
+  toggleEl.addEventListener('click', function () {
+    if (!wakeLockEabled) {
+      noSleep.enable(); // keep the screen on!
+      wakeLockEabled = true;
+      toggleEl.value = "Wake Lock Enabled";
+    } else {
+      noSleep.disable(); // let the screen turn off
+      wakeLockEabled = false;
+      toggleEl.value = "Wake Lock Disabled";
+    }
+  }, false);
+  </script>
+</body>
+</html>
