@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,height=device-height,user-scalable=0">
+    <title>lazyload</title>
+    <style type="text/css">
+    body {
+        font-family: monospace, Georgia, serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .item {
+        min-height: 180px;
+        padding: 100px 50px;
+        border: 1px solid #CCC;
+        margin: 20px;
+        text-align: center;
+        background-color: #FAFAFA;
+    }
+
+    .item img {
+        border: 5px solid #CCC;
+        border-radius: 5px;
+        background-color: #FFF;
+        max-width: 100%;
+    }
+
+    textarea {
+        resize: none;
+        min-height: 100px;
+    }
+
+    .info {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        text-align: center;
+    }
+    .info span {
+      display: inline-block;
+      height: 20px;
+      line-height: 12px;
+      font-size: 12px;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="info">
+        <span>lazyload</span>
+        <!-- <h1>lazyload</h1> -->
+    </div>
+    <div class="box">
+        <div class="item"><img data-src="img/1.jpg"></div>
+        <div class="item"><img data-src="img/2.jpg"></div>
+        <div class="item"><img data-src="img/3.jpg"></div>
+        <div class="item"><img data-src="img/1.jpg"></div>
+        <div class="item"><img data-src="img/4.jpg"></div>
+        <div class="item">
+            <textarea>
+                log(30);
+            </textarea>
+        </div>
+        <div class="item"><img data-src="img/1.jpg"></div>
+        <div class="item"><img data-src="img/2.jpg"></div>
+        <div class="item">
+            <textarea>
+                log(88);
+            </textarea>
+        </div>
+        <div class="item"><img data-src="img/3.jpg"></div>
+        <div class="item"><img data-src="img/4.jpg"></div>
+        <div class="item">
+            <textarea>
+                log(77);
+            </textarea>
+        </div>
+        <div class="item"><img data-src="img/3.jpg"></div>
+        <div class="item"><img data-src="img/2.jpg"></div>
+        <div class="item"><img data-src="img/1.jpg"></div>
+    </div>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+    console.log(document.querySelector('.info').getBoundingClientRect())
+    function log(msg) {
+        window.console && window.console.log && window.console.log(msg);
+    }
+    log("Pause, restart after 1.5 seconds.")
+    var lazyload = new Lazyload('.item', {
+        callback: function() {
+            log('All lazyload item finished.')
+        }
+    }).pause();
+
+    setTimeout(function() {
+      lazyload.restart();
+    },1500)
+    </script>
+</body>
+
+</html>
